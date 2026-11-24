@@ -41,4 +41,22 @@ class PerhitunganController extends Controller
             'hasil' => $hasil,
         ]);
     }
+
+    public function apiCalculate(Request $request, SmartCalculationService $service): \Illuminate\Http\JsonResponse
+    {
+        $weights = $request->input('weights', []);
+        $cleanedWeights = [];
+
+        if (is_array($weights)) {
+            foreach ($weights as $id => $val) {
+                if (is_numeric($val) && (float) $val >= 0) {
+                    $cleanedWeights[(int) $id] = (float) $val;
+                }
+            }
+        }
+
+        $hasil = $service->calculate($cleanedWeights);
+
+        return response()->json($hasil);
+    }
 }

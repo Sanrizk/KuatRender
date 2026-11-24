@@ -14,9 +14,23 @@ beforeEach(function () {
 });
 
 test('public pages are accessible without login', function () {
-    $this->get(route('perhitungan.hasil'))->assertOk()->assertSee('Hasil Rekomendasi Laptop Terbaik');
+    $this->get(route('perhitungan.hasil'))->assertOk()->assertSee('Detail Perhitungan Algoritma SMART');
+    $this->get('/perhitungan')->assertOk()->assertSee('Detail Perhitungan Algoritma SMART');
     $this->get(route('perhitungan.simulator'))->assertOk()->assertSee('Simulator Bobot Kriteria Interaktif');
     $this->get('/login')->assertOk()->assertSee('Login Pengelola SPK');
+});
+
+test('api simulator calculate returns json rankings', function () {
+    $response = $this->postJson(route('api.simulator.calculate'), [
+        'weights' => ['C1' => 30, 'C2' => 20],
+    ]);
+
+    $response->assertOk()
+        ->assertJsonStructure([
+            'ringkasan',
+            'kriterias',
+            'hasil_akhir',
+        ]);
 });
 
 test('protected pages redirect unauthenticated users to login', function () {

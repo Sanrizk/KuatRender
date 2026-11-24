@@ -23,7 +23,9 @@ Route::get('/', function () {
 });
 
 Route::get('/hasil-smart', [PerhitunganController::class, 'hasil'])->name('perhitungan.hasil');
+Route::get('/perhitungan', [PerhitunganController::class, 'hasil'])->name('perhitungan.index');
 Route::get('/simulator', [PerhitunganController::class, 'simulator'])->name('perhitungan.simulator');
+Route::post('/api/simulator/calculate', [PerhitunganController::class, 'apiCalculate'])->name('api.simulator.calculate');
 
 // Protected Routes (Auth Required)
 Route::middleware('auth')->group(function () {
